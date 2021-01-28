@@ -138,21 +138,21 @@ TAWEP_Totals %>%
 
 ###Exporting the data for each track Module of the program#####
 
-TAWEP_STEM <- TAWEP_3 %>% 
-  filter(Areas_of_Interests %in% c("STEM","STEM/JR", "STEM/JR/TWEP", "STEM/TWEP")) %>%
+TAWEP_STEM <- TAWEP_STEM %>% 
+  filter(str_detect(Areas_of_Interests, "STEM")) %>%
             select(Name, Gender,Email, Contact_Number)
 ##Output
 write.csv(TAWEP_STEM, file = "TAWEP_STEM.csv")
 
-TAWEP_GRFWS <- TAWEP_3 %>%
-  filter(Areas_of_Interests %in% c("GRFWS", "JR", "JR/TWEP", "STEM/JR", "STEM/JR/TWEP")) %>%
+TAWEP_GRFWS <- TAWEP_3 %>% 
+  filter(str_detect(Areas_of_Interests, "JR") | str_detect(Areas_of_Interests, "GRFWS")) %>%
   select(Name, Gender,Email, Contact_Number)
 
 ###Output
 write.csv(TAWEP_GRFWS, file = "TAWEP_GRFWS.csv")
 
-TAWEP_TWEP <- TAWEP_3 %>%
-  filter(Areas_of_Interests %in% c("TWEP", "JR/TWEP", "STEM/TWEP", "STEM/JR/TWEP")) %>%
+TAWEP_TWEP <- TAWEP_3 %>% 
+  filter(str_detect(Areas_of_Interests, "TWEP")) %>%
   select(Name, Gender,Email, Contact_Number)
 ###Output
 write.csv(TAWEP_TWEP, file = "TAWEP_TWEP.csv")
