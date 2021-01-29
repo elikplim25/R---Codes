@@ -3,17 +3,17 @@ library(stringr)
 library(readr)
 
 ## A cursory glance at the data
-head(TAWEP2112021)
+head(TAWEP2912021)
 colnames(TAWEP2112021)
 str(TAWEP2112021)
 
 ##Renaming columns
-colnames(TAWEP2112021) <- c("Time", "Name", "Age", "Gender",
+colnames(TAWEP2912021) <- c("Time", "Name", "Age", "Gender",
                             "Email", "Contact_Number", "Educational_Backround",
                             "Occupation", "Areas_of_Interests")
 
 ##Removing duplicates with the "distinct" function and unnecessary columns 
-TAWEP_1 <- TAWEP2112021 %>% distinct(Name, .keep_all = TRUE)
+TAWEP_1 <- TAWEP2912021 %>% distinct(Name, .keep_all = TRUE)
 
 
 ###separating the "TIME" column into date and time then further split "Time" into hours and minutes.
@@ -138,7 +138,7 @@ TAWEP_Totals %>%
 
 ###Exporting the data for each track Module of the program#####
 
-TAWEP_STEM <- TAWEP_STEM %>% 
+TAWEP_STEM <- TAWEP_3 %>% 
   filter(str_detect(Areas_of_Interests, "STEM")) %>%
             select(Name, Gender,Email, Contact_Number)
 ##Output
