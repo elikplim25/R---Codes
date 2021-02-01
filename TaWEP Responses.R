@@ -3,17 +3,17 @@ library(stringr)
 library(readr)
 
 ## A cursory glance at the data
-head(TAWEP2912021)
-colnames(TAWEP2112021)
-str(TAWEP2112021)
+head(TAWEP212021)
+colnames(TAWEP212021)
+str(TAWEP212021)
 
 ##Renaming columns
-colnames(TAWEP2912021) <- c("Time", "Name", "Age", "Gender",
+colnames(TAWEP212021) <- c("Time", "Name", "Age", "Gender",
                             "Email", "Contact_Number", "Educational_Backround",
                             "Occupation", "Areas_of_Interests")
 
 ##Removing duplicates with the "distinct" function and unnecessary columns 
-TAWEP_1 <- TAWEP2912021 %>% distinct(Name, .keep_all = TRUE)
+TAWEP_1 <- TAWEP212021 %>% distinct(Name, .keep_all = TRUE)
 
 
 ###separating the "TIME" column into date and time then further split "Time" into hours and minutes.
@@ -124,6 +124,13 @@ TAWEP_3 %>% count(Areas_of_Interests) %>%
   coord_flip()
 
 ###Visualizing the total number of registrants for each Module
+iLEAD = 120
+GRFWS = 118
+STEM = 144
+Modules <- c("iLEAD", "GRFWS", "STEM")
+Number <- c(101, 118, 126)
+TAWEP_Totals <- data.frame(Modules, Number)
+
 
 TAWEP_Totals %>%
   ggplot(aes(Modules, Number)) + 
@@ -151,7 +158,7 @@ TAWEP_GRFWS <- TAWEP_3 %>%
 ###Output
 write.csv(TAWEP_GRFWS, file = "TAWEP_GRFWS.csv")
 
-TAWEP_TWEP <- TAWEP_3 %>% 
+TAWEP_iLEAD <- TAWEP_3 %>% 
   filter(str_detect(Areas_of_Interests, "TWEP")) %>%
   select(Name, Gender,Email, Contact_Number)
 ###Output
