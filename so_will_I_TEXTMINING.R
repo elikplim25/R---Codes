@@ -2,17 +2,20 @@ library(tidyverse)
 library(tidytext)
 library(wordcloud2)
 
-
+##Reading in the data
 Lyrics <- read.csv("C:\\Users\\PAS\\Documents\\Lyrics.csv", header = TRUE, stringsAsFactors = FALSE)
 
+##Tokenizing the words
 Lyrics_1 <- Lyrics %>% 
   unnest_tokens(word, Text)
 view(Lyrics_1)
 
+##Counting the words
 Lyrics_2 <- Lyrics_1 %>%
   count(word, sort = TRUE)
 view(Lyrics_2)
 
+##Sentiments analysis
 Lyrics_3 <- Lyrics_1 %>%
   #anti_join(stop_words)%>%
   inner_join(get_sentiments("nrc")) %>%
@@ -31,7 +34,7 @@ Lyrics_2 %>%
   coord_flip() + 
   geom_text(aes(label = n), hjust = 2, colour = "white", size = 5) + 
   theme_bw() + 
-  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics #Hillsong") + 
+  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics (without stopwords) #Hillsong") + 
   theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold")) + 
   theme(plot.title = element_text(size = 20, face = "bold"))
   
@@ -52,6 +55,7 @@ Lyrics_4[1:20,] %>%
   theme(plot.title = element_text(size = 20, face = "bold"))
 
 
+##Bar graph to visualize the sentiments expressed in the lyrics
 
 Lyrics_5 <- Lyrics_1 %>%
   inner_join(get_sentiments("bing")) %>%
