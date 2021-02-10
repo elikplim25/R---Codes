@@ -34,7 +34,7 @@ Lyrics_2 %>%
   coord_flip() + 
   geom_text(aes(label = n), hjust = 2, colour = "white", size = 5) + 
   theme_bw() + 
-  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics (without stopwords) #Hillsong") + 
+  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics #Hillsong") + 
   theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold")) + 
   theme(plot.title = element_text(size = 20, face = "bold"))
   
@@ -50,7 +50,7 @@ Lyrics_4[1:20,] %>%
   coord_flip() + 
   geom_text(aes(label = n), hjust = 2, colour = "white", size = 5) + 
   theme_bw() + 
-  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics #Hillsong") + 
+  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics (without stopwords) #Hillsong") + 
   theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold")) + 
   theme(plot.title = element_text(size = 20, face = "bold"))
 
