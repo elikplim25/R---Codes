@@ -15,6 +15,21 @@ Lyrics_2 <- Lyrics_1 %>%
   count(word, sort = TRUE)
 view(Lyrics_2)
 
+##visualizing total number of words and unique words
+Totals <- c("Total Number of Words", "Total Number of Unique Words")
+Number <- c(389, 168)
+Lyrics_count <- data.frame(Totals, Number)
+Lyrics_count
+
+Lyrics_count %>%
+  ggplot(aes(Totals, Number))+
+  geom_bar(stat = "identity", fill = "tan1")+
+  theme_bw() + 
+  geom_text(aes(label = Number), vjust = 2, colour = "red", size = 7) +
+  labs(x = "TOTALS", y = "NUMBER", title = "Count of Words in 'So Will I' lyrics #Hillsong") + 
+  theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold")) + 
+  theme(plot.title = element_text(size = 20, face = "bold"))
+
 ##Sentiments analysis
 Lyrics_3 <- Lyrics_1 %>%
   #anti_join(stop_words)%>%
