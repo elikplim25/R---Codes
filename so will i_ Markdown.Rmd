@@ -1,0 +1,133 @@
+---
+title: 'So will I lyrics - Exploratory Analysis #Hillsong'
+author: "Elikplim Sabblah"
+date: "2/19/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+This is a simple exploratory analysis of the Lyrics of Hillsong's **So will I** lyrics. 
+It is a very powerful worship song that makes good use of imagery and proclamations that
+worshipers can easily connect to. This analysis just seeks to take a deep dive into the lyrics
+via some data analytic functions. It is mostly characterized by count of words under different themes. 
+
+Reading load the data into R markdown to commence the analysis
+```{r}
+Lyrics <- read.csv("C:\\Users\\PAS\\Documents\\Lyrics.csv", header = TRUE, stringsAsFactors = FALSE)
+```
+
+Also, let us load all the libraries that we will need to do the analysis
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(wordcloud2)
+```
+
+
+Firstly, let us take a look at the data itself. 
+
+```{r}
+head(Lyrics)
+```
+
+To be able to analyze the lyrics according to individual words, we need to tokenize the text in the data - in this case, the lyrics. Tokenization is essentially splitting a phrase, sentence, paragraph, or an entire text document into smaller units, such as individual words or terms.This helps us do the analysis according to portions of the text that 
+we desire to use. 
+
+## Tokenizing the words of the lyrics
+
+```{r}
+Lyrics_1 <- Lyrics %>% 
+  unnest_tokens(word, Text)
+head(Lyrics_1)
+```
+
+## Counting the number of words in the Lyrics
+```{r}
+Lyrics_2 <- Lyrics_1 %>%
+  count(word, sort = TRUE)
+head(Lyrics_2)
+```
+
+## Visualizing total number of words and unique words
+```{r}
+Totals <- c("Total Number of Words", "Total Number of Unique Words")
+Number <- c(389, 168)
+Lyrics_count <- data.frame(Totals, Number)
+head(Lyrics_count)
+
+Lyrics_count %>%
+  ggplot(aes(Totals, Number))+
+  geom_bar(stat = "identity", fill = "tan1")+
+  theme_bw() + 
+  geom_text(aes(label = Number), vjust = 2, colour = "red", size = 7) +
+  labs(x = "TOTALS", y = "NUMBER", title = "Count of Words in 'So Will I' lyrics #Hillsong") + 
+  theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold"))+
+  theme(plot.title = element_text(size = 20, face = "bold"))
+```
+
+## Sentiments Analysis
+```{r}
+Lyrics_3 <- Lyrics_1 %>%
+  inner_join(get_sentiments("nrc")) %>%
+  count(word, sentiment, sort = TRUE)
+```
+
+## Making the word cloud
+```{r}
+wordcloud2(Lyrics_2)
+```
+
+## Making bar graph including stop words
+```{r}
+Lyrics_2 %>%
+  top_n(20) %>%
+  ggplot(aes(reorder(word, n), n)) +
+  geom_col(fill = "firebrick3") + 
+  coord_flip() + 
+  geom_text(aes(label = n), hjust = 2, colour = "white", size = 5) + 
+  theme_bw() + 
+  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics #Hillsong") + 
+  theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold"))+
+  theme(plot.title = element_text(size = 20, face = "bold"))
+```
+
+## Making bar graph excluding stop words
+```{r}
+Lyrics_4 <- Lyrics_1 %>%
+  anti_join(stop_words)%>%
+  count(word,sort = TRUE)
+
+Lyrics_4[1:20,] %>%
+  ggplot(aes(reorder(word, n), n)) +
+  geom_col(fill = "coral4") + 
+  coord_flip() + 
+  geom_text(aes(label = n), hjust = 2, colour = "white", size = 5) + 
+  theme_bw() + 
+  labs(x = "WORDS", y = "NUMBER", title = "Frequency of top 20 words in 'So Will I' lyrics (without stopwords) #Hillsong") + 
+  theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold"))+ 
+  theme(plot.title = element_text(size = 20, face = "bold"))
+```
+
+## Bar graph to visualize the sentiments expressed in the lyrics
+```{r}
+Lyrics_5 <- Lyrics_1 %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE)
+
+
+Lyrics_6 <- Lyrics_3 %>% count(sentiment)
+colnames(Lyrics_6) <- c("Sentiment", "Number")
+
+
+Lyrics_6 %>%
+  ggplot(aes(reorder(Sentiment, Number), Number)) +
+  geom_col(fill = "darkorange1") + 
+  coord_flip() + 
+  geom_text(aes(label = Number), hjust = 2, colour = "black", size = 7) + 
+  theme_bw() + 
+  labs(x = "WORDS", y = "NUMBER", title = "Frequency of Sentiments in 'So Will I' Lyrics #Hillsong") + 
+  theme(axis.text=element_text(size=15, face = "bold", colour = "black"),axis.title=element_text(size=20,face="bold"))+ 
+  theme(plot.title = element_text(size = 20, face = "bold"))
+```
